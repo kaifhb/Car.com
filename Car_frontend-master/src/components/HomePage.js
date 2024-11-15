@@ -1,6 +1,9 @@
+// src/components/HomePage.js
+
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useSpring, animated } from "react-spring";
+import "./HomePage.css"; // Import CSS for additional styling
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
@@ -24,22 +27,14 @@ const HomePage = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <animated.div
-        style={props}
-        className="bg-white shadow-md rounded-lg p-6 w-11/12 max-w-xl text-center"
-      >
-        <h1 className="text-3xl font-bold text-gray-800">
-          Welcome, {user.username}!
-        </h1>
-        <p className="mt-4 text-gray-600 text-lg">
-          Manage your cars with ease.
-        </p>
+    <div className="homepage-container">
+      <animated.div style={props} className="user-details">
+        <h1>Welcome, {user.username}!</h1>
+        <p>Manage your cars with ease.</p>
       </animated.div>
-
-      <div className="mt-10">
+      <div className="animation-container">
         {/* Example Animation: A simple spinning wheel */}
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="spinner"></div>
       </div>
     </div>
   );

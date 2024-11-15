@@ -1,169 +1,79 @@
-// src/context/AuthContext.js
+// src/components/Auth/Login.js
 
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import "./Login.css"; // Import the CSS file
 
-// Create the AuthContext
-export const AuthContext = createContext();
+const Login = () => {
+  const { login, auth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-// Create a provider component
-export const AuthProvider = ({ children }) => {
-  // State to hold the authentication status and user data
-  const [auth, setAuth] = useState({
-    isAuthenticated: false,
-    user: null,
-    token: null,
-    loading: true, // To handle the initial loading state
-    error: null,
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
   });
 
-  // Base URL for your API
-  const API_URL = "https://car-com-2.onrender.com/api"; // Replace with your actual API URL
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Effect to load user from localStorage on initial render
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (token && user) {
-      setAuth({
-        isAuthenticated: true,
-        user: user,
-        token: token,
-        loading: false,
-        error: null,
-      });
-      // Set the token in axios headers for subsequent requests
-      axios.defaults.headers.common["Authorization"] = token;
-    } else {
-      setAuth({
-        isAuthenticated: false,
-        user: null,
-        token: null,
-        loading: false,
-        error: null,
-      });
-    }
-  }, []);
-
-  /**
-   * Function to handle user signup
-   * @param {Object} userData - Contains username and password
-   */
-  const signup = async (userData) => {
-    try {
-      const response = await axios.post(`${API_URL}/users/signup`, userData);
-
-      // Assuming the response contains a token and user data
-      const { token, user } = response.data;
-      console.log(user);
-      // Save token and user to localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // Set the token in axios headers
-      axios.defaults.headers.common["Authorization"] = token;
-
-      // Update auth state
-      setAuth({
-        isAuthenticated: true,
-        user: user,
-        token: token,
-        loading: false,
-        error: null,
-      });
-
-      return { success: true };
-    } catch (error) {
-      console.error("Signup Error:", error.response.data);
-      setAuth((prevState) => ({
-        ...prevState,
-        error: error.response.data.message || "Signup failed",
-      }));
-      return { success: false, message: error.response.data.message };
-    }
-  };
-
-  /**
-   * Function to handle user login
-   * @param {Object} credentials - Contains username and password
-   */
-  const login = async (credentials) => {
-    try {
-      const response = await axios.post(`${API_URL}/users/login`, credentials);
-
-      // Assuming the response contains a token and user data
-      const { token, user } = response.data;
-
-      // Save token and user to localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // Set the token in axios headers
-      axios.defaults.headers.common["Authorization"] = token;
-
-      // Update auth state
-      setAuth({
-        isAuthenticated: true,
-        user: user,
-        token: token,
-        loading: false,
-        error: null,
-      });
-
-      return { success: true };
-    } catch (error) {
-      console.error("Login Error:", error.response.data);
-      setAuth((prevState) => ({
-        ...prevState,
-        error: error.response.data.message || "Login failed",
-      }));
-      return { success: false, message: error.response.data.message };
-    }
-  };
-
-  /**
-   * Function to handle user logout
-   */
-  const logout = () => {
-    // Remove token and user from localStorage
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    // Remove the token from axios headers
-    delete axios.defaults.headers.common["Authorization"];
-
-    // Update auth state
-    setAuth({
-      isAuthenticated: false,
-      user: null,
-      token: null,
-      loading: false,
-      error: null,
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
     });
   };
 
-  /**
-   * Function to clear authentication errors
-   */
-  const clearError = () => {
-    setAuth((prevState) => ({
-      ...prevState,
-      error: null,
-    }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await login(credentials);
+    if (result.success) {
+      navigate("/cars"); // Redirect to car list or dashboard
+    } else {
+      setErrorMessage(result.message);
+    }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/cars");
+    }
+  }, [navigate]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        auth,
-        signup,
-        login,
-        logout,
-        clearError,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <div className="login-container">
+      <div className="login-card">
+        <h2>Login</h2>
+        {auth.error && <p className="error-message">{auth.error}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <form onSubmit={handleSubmit} className="login-form">
+          <div>
+            <label>Username:</label>
+            <input
+              type="text"
+              name="username"
+              value={credentials.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" disabled={auth.loading}>
+            {auth.loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
+
+export default Login;

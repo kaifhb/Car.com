@@ -1,0 +1,126 @@
+/* src/components/Cars/CarList.css */
+
+.car-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .car-list-title {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .search-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .add-car-link {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+  }
+  
+  .add-car-button {
+    text-decoration: none;
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-car-button:hover {
+    background-color: #218838;
+  }
+  
+  .car-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .car-list-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .car-list-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .car-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .car-link h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0 0 0.5rem;
+  }
+  
+  .car-link p {
+    color: #555;
+    margin: 0.5rem 0;
+  }
+  
+  .car-link strong {
+    color: #333;
+  }
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  @media (max-width: 600px) {
+    .search-form {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    .search-button {
+      width: 100%;
+    }
+  
+    .add-car-link {
+      justify-content: center;
+    }
+  }
+  
