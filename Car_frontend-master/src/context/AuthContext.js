@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   // Base URL for your API
-  const API_URL = "http://localhost:5000/api"; // Replace with your actual API URL
+  const API_URL = "https://car-com-2.onrender.com/api"; // Replace with your actual API URL
 
   // Effect to load user from localStorage on initial render
   useEffect(() => {

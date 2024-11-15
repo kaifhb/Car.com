@@ -8,7 +8,7 @@ import { Loader2, ArrowLeft, Pencil, Trash2 } from "lucide-react";
  * Displays detailed information about a specific car.
  * Provides options to edit or delete the car.
  */
-const API_URL = " http://localhost:5000/api";
+const API_URL = " https://car-com-2.onrender.com/api";
 
 const CarDetail = () => {
   const { id } = useParams();

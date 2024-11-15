@@ -22,7 +22,7 @@ const CarForm = () => {
   const [uploadMessage, setUploadMessage] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
-  const API_URL = "http://localhost:5000/api";
+  const API_URL = "https://car-com-2.onrender.com/api";
 
   useEffect(() => {
     if (isEditMode) {
